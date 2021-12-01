@@ -4,16 +4,19 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:imei_plugin/imei_plugin.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformImei = 'Unknown';
-  String uniqueId = "Unknown";
+  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
@@ -23,17 +26,16 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    String platformImei;
-    String idunique;
+    String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
     try {
-      platformImei =
-          await ImeiPlugin.getImei(shouldShowRequestPermissionRationale: false);
-      List<String> multiImei = await ImeiPlugin.getImeiMulti();
-      print(multiImei);
-      idunique = await ImeiPlugin.getId();
-    } on PlatformException {
-      platformImei = 'Failed to get platform version.';
+      platformVersion =
+          await ImeiPlugin.getImei() ?? 'Unknown platform version';
+    } on PlatformException catch(e) {
+      print(e);
+      print(e.details);
+      platformVersion = 'Failed to get platform version.';
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -42,8 +44,7 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      _platformImei = platformImei;
-      uniqueId = idunique;
+      _platformVersion = platformVersion;
     });
   }
 
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformImei\n is equal to : $uniqueId'),
+          child: Text('Running on: $_platformVersion\n'),
         ),
       ),
     );

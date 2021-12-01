@@ -1,9 +1,10 @@
+
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-class ImeiPlugin {
-  static const MethodChannel _channel = const MethodChannel('imei_plugin');
+mixin ImeiPlugin {
+  static const MethodChannel _channel = MethodChannel('imei_plugin');
 
   // get imei android device @return String
   static Future<String?> getImei({
@@ -24,5 +25,4 @@ class ImeiPlugin {
   static Future<String?> getId() async {
     return await _channel.invokeMethod('getId');
   }
-  
 }

@@ -11,11 +11,11 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"getImei" isEqualToString:call.method]) {
-    NSUUID *identifierForVendor = [[UIDevice currentDevice] identifierForVendor];
-    result([identifierForVendor UUIDString]);
-  } else {
-    result(FlutterMethodNotImplemented);
-  }
+      NSUUID *identifierForVendor = [[UIDevice currentDevice] identifierForVendor];
+      result([identifierForVendor UUIDString]);
+    } else {
+      result(FlutterMethodNotImplemented);
+    }
 }
 
 @end
